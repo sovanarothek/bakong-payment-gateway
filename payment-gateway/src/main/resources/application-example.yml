@@ -1,0 +1,45 @@
+server:
+  port: 7788
+  servlet:
+    context-path: /api/
+
+spring:
+  application:
+    name: payment-gateway
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://host:port/dbName?currentSchema=schema
+    username:
+    password:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /swagger-ui
+  swagger-ui:
+    enabled: true
+    path: /swagger-doc
+    tryItOutEnabled: true
+    persistAuthorization: true
+    operationsSorter: method
+    tagsSorter: alpha
+    filter: true
+  enable-kotlin: false
+
+my-config:
+  openapi:
+    local-url:
+    dev-url:
+    prod-url:
+
+  bakong:
+    api:
+    token:
+    origin:
