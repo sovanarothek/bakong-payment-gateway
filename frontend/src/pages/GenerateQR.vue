@@ -11,13 +11,13 @@
           <v-text-field
             v-model="accountNumber"
             :rules="notEmptyRules"
-            label="Bank account number"
+            label="Bakong account id"
           ></v-text-field>
 
           <v-text-field
             v-model="accountName"
             :rules="notEmptyRules"
-            label="Bank account name"
+            label="Bakong account name"
           ></v-text-field>
 
           <v-text-field
@@ -90,8 +90,8 @@ const generateKHQR = () => {
   // });
   axios
     .post("http://127.0.0.1:7788/api/khqr/generate", {
-      bankAccountNumber: accountNumber.value,
-      bankAccountName: accountName.value,
+      bakongAccountId: accountNumber.value,
+      bakongAccountName: accountName.value,
       amount: parseFloat(amount.value),
       currencyCode: currency.value,
       bank: bank.value,
