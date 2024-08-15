@@ -7,10 +7,7 @@ import com.bakong.payment_gateway.request.KHQRGenerateRequest;
 import com.bakong.payment_gateway.response.ApiResponse;
 import jakarta.annotation.Resource;
 import kh.org.nbc.bakong_khqr.BakongKHQR;
-import kh.org.nbc.bakong_khqr.model.CRCValidation;
-import kh.org.nbc.bakong_khqr.model.IndividualInfo;
-import kh.org.nbc.bakong_khqr.model.KHQRData;
-import kh.org.nbc.bakong_khqr.model.KHQRResponse;
+import kh.org.nbc.bakong_khqr.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,22 +29,19 @@ public class KHQRGenerateService {
         Double finalAmount = request.getAmount() > 0 ? request.getAmount() : null;
 
         IndividualInfo individualInfo = new IndividualInfo();
-        individualInfo.setBakongAccountId(request.getBank().getValue());
-        individualInfo.setAccountInformation(request.getBankAccountNumber());
-        individualInfo.setAcquiringBank("ABA Bank");
+        individualInfo.setBakongAccountId(request.getBakongAccountId() + request.getBank().getValue());
         individualInfo.setAmount(finalAmount);
         individualInfo.setCurrency(request.getCurrencyCode());
-        individualInfo.setMerchantName(request.getBankAccountName());
+        individualInfo.setMerchantName(request.getBakongAccountName());
         individualInfo.setMerchantCity("Phnom Penh");
-
 
         KHQRResponse<KHQRData> response = BakongKHQR.generateIndividual(individualInfo);
 
         if (response.getKHQRStatus().getCode() == 0) {
             if (validateValidKHQR(response.getData().getQr())) {
                 KHQRGenerateEntity newKHQRGenData = KHQRGenerateEntity.builder()
-                        .accountName(request.getBankAccountName())
-                        .accountNumber(request.getBankAccountNumber())
+                        .accountName(request.getBakongAccountName())
+                        .accountNumber(request.getBakongAccountId())
                         .bank(request.getBank().name())
                         .md5(response.getData().getMd5())
                         .encodeQr(response.getData().getQr())
@@ -63,7 +57,7 @@ public class KHQRGenerateService {
             }
 
         }
-        return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(),"error khqr generated");
+        return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR.value(), "error khqr generated");
     }
 
     public ApiResponse findAllKHQRGenerateTransaction(Integer pageNumber, Integer pageSize) {

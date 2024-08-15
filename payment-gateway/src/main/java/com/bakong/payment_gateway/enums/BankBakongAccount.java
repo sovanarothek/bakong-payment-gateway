@@ -1,8 +1,17 @@
 package com.bakong.payment_gateway.enums;
 
 public enum BankBakongAccount {
-    ABA("abaakhppxxx@abaa"),
-    ACLEDA("aclbkhppxxx@aclb");
+    ABA("@abaa"),
+    ACLEDA("@aclb"),
+    WING("@wing"),
+    CANADIA("@cadi"),
+    APD("@adeo"),
+    AMK("@amkb"),
+    AMRET("@amrt"),
+    TRUEMONEY("@trmc"),
+    VATTANAC("@vbl"),
+    UNION("@ucbp"),
+    LYHOUR("@lypp");
 
     private final String value;
 
